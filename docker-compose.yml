@@ -1,0 +1,24 @@
+version: "3"
+services:
+
+  reqbaz-backend:
+    build:
+      context: ./reqbaz-backend
+    links:
+      - reqbaz-mysql:mysql
+
+  reqbaz-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: reqbaz
+      MYSQL_DATABASE: reqbaz
+    expose:
+      - 3306
+
+  reqbaz-frontend:
+    build:
+      context: ./reqbaz-frontend
+    links:
+      - reqbaz-backend:backend
+    ports:
+      - 3000:3000

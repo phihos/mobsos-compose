@@ -1,0 +1,6 @@
+[submodule "reqbaz-backend/repo"]
+	path = reqbaz-backend/repo
+	url = git@github.com:rwth-acis/RequirementsBazaar.git
+[submodule "reqbaz-frontend/repo"]
+	path = reqbaz-frontend/repo
+	url = https://github.com/rwth-acis/RequirementsBazaar-WebFrontend.git
