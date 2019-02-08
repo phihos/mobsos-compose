@@ -1,0 +1,12 @@
+FROM ubuntu:16.04
+
+RUN apt-get update && apt-get install -y \
+                      ant \
+                      openjdk-8-jdk
+
+ADD repo /src
+WORKDIR /src
+RUN ant all
+
+EXPOSE 9011
+CMD java -cp "lib/*" i5.las2peer.tools.L2pNodeLauncher -p 9011 -b reqbaz-backend:9011 uploadStartupDirectory startService\(\'de.las2peer.services.fileService.FileService@1.0\',\'Passphrase\'\) startWebConnector

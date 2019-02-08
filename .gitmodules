@@ -4,3 +4,9 @@
 [submodule "reqbaz-frontend/repo"]
 	path = reqbaz-frontend/repo
 	url = https://github.com/rwth-acis/RequirementsBazaar-WebFrontend.git
+[submodule "activity-tracker/repo"]
+	path = activity-tracker/repo
+	url = git@github.com:rwth-acis/las2peer-ActivityTracker.git
+[submodule "file-service/repo"]
+	path = file-service/repo
+	url = git@github.com:rwth-acis/las2peer-FileService.git

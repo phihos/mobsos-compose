@@ -6,6 +6,8 @@ services:
       context: ./reqbaz-backend
     links:
       - reqbaz-mysql:mysql
+    ports:
+      - 8080:8080
 
   reqbaz-mysql:
     image: mysql:5.7
@@ -21,4 +23,25 @@ services:
     links:
       - reqbaz-backend:backend
     ports:
-      - 3000:3000
+      - 8081:8081
+
+  activity-tracker:
+    build:
+      context: ./activity-tracker
+    links:
+      - reqbaz-backend:reqbaz-backend
+      - activity-tracker-mysql:mysql
+
+  activity-tracker-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: reqbaz
+      MYSQL_DATABASE: reqbaztrack
+    expose:
+      - 3306
+
+  file-service:
+    build:
+      context: ./file-service
+    links:
+      - reqbaz-backend:reqbaz-backend
