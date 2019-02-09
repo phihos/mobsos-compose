@@ -13,6 +13,7 @@ RUN bower install --allow-root
 
 # Config
 RUN sed -i "s?        value: 'https://requirements-bazaar.org/bazaar/'?        value: 'http://localhost:8080/bazaar/'?g" ./src/config-behavior.html
+RUN sed -i "s?        value: 'https://requirements-bazaar.org/fileservice/files/'?        value: 'http://localhost:8080/fileservice/files/'?g" ./src/config-behavior.html
 RUN sed -i "s?        value: 'https://requirements-bazaar.org/activities'?        value: 'http://localhost:8080/activities'?g" ./src/config-behavior.html
 
 EXPOSE 3000
