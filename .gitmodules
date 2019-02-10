@@ -10,3 +10,6 @@
 [submodule "file-service/repo"]
 	path = file-service/repo
 	url = git@github.com:rwth-acis/las2peer-FileService.git
+[submodule "mobsos-data-processing/repo"]
+	path = mobsos-data-processing/repo
+	url = https://github.com/rwth-acis/mobsos-data-processing.git

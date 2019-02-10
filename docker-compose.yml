@@ -6,6 +6,7 @@ services:
       context: ./reqbaz-backend
     links:
       - reqbaz-mysql:mysql
+      - mobsos-data-processing:mobsos-data-processing
     ports:
       - 8080:8080
 
@@ -29,7 +30,7 @@ services:
     build:
       context: ./activity-tracker
     links:
-      - reqbaz-backend:reqbaz-backend
+      - mobsos-data-processing:mobsos-data-processing
       - activity-tracker-mysql:mysql
 
   activity-tracker-mysql:
@@ -44,4 +45,25 @@ services:
     build:
       context: ./file-service
     links:
-      - reqbaz-backend:reqbaz-backend
+      - mobsos-data-processing:mobsos-data-processing
+
+  mobsos-data-processing:
+    build:
+      context: ./mobsos-data-processing
+    links:
+      - mobsos-data-processing-mysql:mysql
+
+  mobsos-data-processing-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: mobsos
+      MYSQL_DATABASE: LAS2PEERMON
+    expose:
+      - 3306
+
+  adminer:
+    image: adminer
+    links:
+      - mobsos-data-processing-mysql:db
+    ports:
+      - 8082:8080
