@@ -3,10 +3,17 @@ services:
 
   reqbaz-backend:
     build:
-      context: ./reqbaz-backend
+      context: ./reqbaz-backend/repo
     links:
       - reqbaz-mysql:mysql
       - mobsos-data-processing:mobsos-data-processing
+    environment:
+      BOOTSTRAP: mobsos-data-processing:9011
+      MYSQL_USER: reqbaz
+      MYSQL_PASSWORD: reqbaz
+      INSERT_DEMO_DATA_FULL: 'true'
+      ACTIVITY_TRACKER_SERVICE: 'de.rwth.dbis.acis.activitytracker.service.ActivityTrackerService@*'
+      SERVICE_EXTRA_ARGS: '--observer'
     ports:
       - 8080:8080
 
@@ -14,6 +21,8 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: reqbaz
+      MYSQL_USER: reqbaz
+      MYSQL_PASSWORD: reqbaz
       MYSQL_DATABASE: reqbaz
     expose:
       - 3306
@@ -27,8 +36,14 @@ services:
       - 8081:8081
 
   activity-tracker:
-    build:
-      context: ./activity-tracker
+    image: rwthacis/las2peer-activity-tracker:develop
+    environment:
+      BOOTSTRAP: mobsos-data-processing:9011
+      MYSQL_USER: activity_tracker
+      MYSQL_PASSWORD: activity_tracker
+      INSERT_DEMO_DATA: 'true'
+      SERVICE_EXTRA_ARGS: '--observer'
+      #DEBUG: 'true'
     links:
       - mobsos-data-processing:mobsos-data-processing
       - activity-tracker-mysql:mysql
@@ -36,20 +51,26 @@ services:
   activity-tracker-mysql:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: reqbaz
+      MYSQL_ROOT_PASSWORD: activity_tracker
+      MYSQL_USER: activity_tracker
+      MYSQL_PASSWORD: activity_tracker
       MYSQL_DATABASE: reqbaztrack
     expose:
       - 3306
 
   file-service:
-    build:
-      context: ./file-service
+    image: rwthacis/las2peer-file-service:develop
+    environment:
+      BOOTSTRAP: mobsos-data-processing:9011
+      SERVICE_EXTRA_ARGS: '--observer'
     links:
       - mobsos-data-processing:mobsos-data-processing
 
   mobsos-data-processing:
-    build:
-      context: ./mobsos-data-processing
+    image: rwthacis/mobsos-data-processing:develop
+    environment:
+      MYSQL_USER: mobsos
+      MYSQL_PASSWORD: mobsos
     links:
       - mobsos-data-processing-mysql:mysql
 
@@ -57,6 +78,8 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: mobsos
+      MYSQL_USER: mobsos
+      MYSQL_PASSWORD: mobsos
       MYSQL_DATABASE: LAS2PEERMON
     expose:
       - 3306
@@ -64,6 +87,7 @@ services:
   adminer:
     image: adminer
     links:
-      - mobsos-data-processing-mysql:db
+      - mobsos-data-processing-mysql:processing-db
+      - activity-tracker-mysql:activity-db
     ports:
       - 8082:8080
