@@ -24,3 +24,6 @@ hs_err_pid*
 
 # Jetbrains
 .idea
+
+# ignore .env file containing secrets
+/.env

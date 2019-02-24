@@ -74,6 +74,18 @@ services:
     links:
       - mobsos-data-processing-mysql:mysql
 
+  mobsos-success-modeling:
+    image: rwthacis/mobsos-success-modeling:develop
+    environment:
+      MYSQL_USER: mobsos
+      MYSQL_PASSWORD: mobsos
+      BOOTSTRAP: mobsos-data-processing:9011
+      USE_FILE_SERVICE: 'TRUE'
+      SERVICE_EXTRA_ARGS: '--observer'
+    links:
+      - mobsos-data-processing:mobsos-data-processing
+      - mobsos-data-processing-mysql:mysql
+
   mobsos-data-processing-mysql:
     image: mysql:5.7
     environment:
@@ -81,6 +93,84 @@ services:
       MYSQL_USER: mobsos
       MYSQL_PASSWORD: mobsos
       MYSQL_DATABASE: LAS2PEERMON
+    expose:
+      - 3306
+
+  mobsos-surveys:
+    image: rwthacis/mobsos-surveys:develop
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: mobsos
+      OIDC_CLIENT_ID: 2fbca3ef-babc-431b-ac61-f99967228552
+      BOOTSTRAP: mobsos-data-processing:9011
+      SERVICE_EXTRA_ARGS: '--observer'
+    links:
+      - mobsos-data-processing:mobsos-data-processing
+      - mobsos-surveys-mysql:mysql
+
+  mobsos-surveys-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: mobsos
+      MYSQL_DATABASE: mobsos
+    expose:
+      - 3306
+
+  mobsos-query-visualization:
+    image: rwthacis/mobsos-query-visualization:development
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: mobsos
+      INIT_EXAMPLE_DATABASE: 'true'
+      MYSQL_EXAMPLE_USER: root
+      MYSQL_EXAMPLE_PASSWORD: mobsos
+      BOOTSTRAP: mobsos-data-processing:9011
+      SERVICE_EXTRA_ARGS: '--observer'
+    links:
+      - mobsos-data-processing:mobsos-data-processing
+      - mobsos-query-visualization-mysql:mysql
+
+  mobsos-query-visualization-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: mobsos
+      MYSQL_DATABASE: QVS
+    expose:
+      - 3306
+
+  cae-code-generation-service:
+    build:
+      context: ./cae-code-generation-service/repo
+    environment:
+      GIT_USER: ${GIT_USER}
+      GIT_PASSWORD: ${GIT_PASSWORD}
+      GIT_USER_MAIL: ${GIT_USER_MAIL}
+      GIT_ORGANIZATION: ${GIT_ORGANIZATION}
+      BOOTSTRAP: mobsos-data-processing:9011
+      SERVICE_EXTRA_ARGS: '--observer'
+    links:
+      - mobsos-data-processing:mobsos-data-processing
+
+  cae-model-persistence-service:
+    build:
+      context: ./cae-model-persistence-service/repo
+    environment:
+      MYSQL_USER: cae
+      MYSQL_PASSWORD: cae
+      INIT_WIREFRAME_EXTENSION: 'true'
+      BOOTSTRAP: mobsos-data-processing:9011
+      SERVICE_EXTRA_ARGS: '--observer'
+    links:
+      - mobsos-data-processing:mobsos-data-processing
+      - cae-model-persistence-service-mysql:mysql
+
+  cae-model-persistence-service-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: cae
+      MYSQL_USER: cae
+      MYSQL_PASSWORD: cae
+      MYSQL_DATABASE: commedit
     expose:
       - 3306
 

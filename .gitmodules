@@ -13,3 +13,21 @@
 [submodule "mobsos-data-processing/repo"]
 	path = mobsos-data-processing/repo
 	url = https://github.com/rwth-acis/mobsos-data-processing.git
+[submodule "mobsos-success-modeling/repo"]
+	path = mobsos-success-modeling/repo
+	url = git@github.com:rwth-acis/mobsos-success-modeling.git
+[submodule "mobsos-surveys/repo"]
+	path = mobsos-surveys/repo
+	url = git@github.com:rwth-acis/mobsos-surveys.git
+[submodule "mobsos-query-visualization/repo"]
+	path = mobsos-query-visualization/repo
+	url = git@github.com:rwth-acis/mobsos-query-visualization.git
+[submodule "cae-code-generation-service/repo"]
+	path = cae-code-generation-service/repo
+	url = git@github.com:rwth-acis/CAE-Code-Generation-Service.git
+[submodule "cae-model-persistence-service/repo"]
+	path = cae-model-persistence-service/repo
+	url = git@github.com:rwth-acis/CAE-Model-Persistence-Service.git
+[submodule "role-sdk/repo"]
+	path = role-sdk/repo
+	url = https://github.com/rwth-acis/ROLE-SDK
